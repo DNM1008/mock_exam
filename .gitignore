@@ -40,6 +40,8 @@ researching/ocr/model/
 **/env.bak/
 **/venv.bak/
 .computer_vision/
+.exam/
+
 
 ############################
 # Jupyter / IPython (ANYWHERE)
