@@ -56,6 +56,7 @@ def init_state():
         # NEW STATE
         st.session_state.user_answers = {}  # {idx: "a"}
         st.session_state.answered = set()  # {idx}
+        st.session_state.bookmarked = set()  # Set for bookmarked questions
 
 
 def main():
@@ -82,6 +83,24 @@ def main():
         if jump_idx != idx:
             st.session_state.current_index = jump_idx
             st.rerun()
+
+        st.write(f"✅ Đã trả lời: {len(st.session_state.answered)}/{len(data)}")
+
+        st.write("🔖 Bookmarks")
+        for i, q_data in enumerate(data):
+            q_num = i + 1
+            color = "yellow" if i in st.session_state.bookmarked else "white"
+
+            if i in st.session_state.answered:
+                if st.session_state.user_answers[i] == q_data["correct"]:
+                    color = "white"
+                else:
+                    color = "red"
+
+            st.markdown(
+                f"<div style='background-color:{color}; padding: 8px; border-radius: 4px;'>Câu {q_num}</div>",
+                unsafe_allow_html=True,
+            )
 
         st.write(f"✅ Đã trả lời: {len(st.session_state.answered)}/{len(data)}")
 
@@ -159,6 +178,14 @@ def main():
         st.info(
             f"**Đáp án:** {correct_choice.upper()}. {q['options_text'][correct_choice]}"
         )
+
+    # Bookmark button
+    if st.button("📚 Đánh dấu câu hỏi này"):
+        if idx not in st.session_state.bookmarked:
+            st.session_state.bookmarked.add(idx)
+        else:
+            st.session_state.bookmarked.remove(idx)
+        st.rerun()
 
     # Completion check
     if len(st.session_state.answered) == len(data):
