@@ -1,3 +1,7 @@
+import subprocess
+
+subprocess.run(["pip", "install", "-r", "requirements.txt"])
+
 import random
 import pandas as pd
 import streamlit as st
